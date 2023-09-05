@@ -1,6 +1,6 @@
 import { styled } from 'styled-components';
 import { ChildrenProps } from '../../../types/commonTypes';
-import SearchIcon from '../common/icon/SearchIcon';
+import SearchIcon from '../icon/SearchIcon';
 
 function InputLayout({ children }: ChildrenProps) {
   return (
