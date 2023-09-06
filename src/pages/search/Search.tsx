@@ -1,5 +1,5 @@
 import { styled } from 'styled-components';
-import SearchInput from '../../components/search/SearchInput';
+import SearchIndex from '../../components/search/SearchIndex';
 
 function Search() {
   return (
@@ -10,7 +10,7 @@ function Search() {
           <br />
           온라인으로 참여하기
         </StyleH2>
-        <SearchInput />
+        <SearchIndex />
       </SectionBox>
     </SectionContainer>
   );
