@@ -1,7 +1,7 @@
 import { ChangeEvent, FocusEvent, KeyboardEvent, useEffect, useRef, useState } from 'react';
 import { styled } from 'styled-components';
 import useRequest from '../../hooks/useRequest';
-import AutoCompleteBox from './AutoCompleteBox';
+import AutoCompleteList from './AutoCompleteList';
 import EmptyButton from './EmptyButton';
 import InputLayout from './layout/InputLayout';
 
@@ -115,7 +115,7 @@ function SearchIndex() {
       {open && (
         <>
           <EmptyButton onClick={doReset} />
-          <AutoCompleteBox sicks={sicks} isLoading={isLoading} isEmpty={isEmpty} focusIndex={focusIndex} ref={ref} />
+          <AutoCompleteList sicks={sicks} isLoading={isLoading} isEmpty={isEmpty} focusIndex={focusIndex} ref={ref} />
         </>
       )}
     </InputLayout>

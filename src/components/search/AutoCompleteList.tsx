@@ -12,7 +12,7 @@ interface ResultProps {
   focusIndex: number;
 }
 
-function AutoCompleteBox({ sicks, isLoading, isEmpty, focusIndex }: ResultProps, ref: Ref<HTMLUListElement>) {
+function AutoCompleteList({ sicks, isLoading, isEmpty, focusIndex }: ResultProps, ref: Ref<HTMLUListElement>) {
   return (
     <>
       <DropDownUl ref={ref}>
@@ -50,4 +50,4 @@ const RecommandP = styled.p`
   margin: 20px 0 0 15px;
 `;
 
-export default forwardRef(AutoCompleteBox);
+export default forwardRef(AutoCompleteList);
