@@ -1,9 +1,5 @@
-import axios, { AxiosResponse } from 'axios';
+import { AxiosResponse } from 'axios';
+import apiClient from './axiosInstance';
 
-export const getSearchResult = (keyword: string): Promise<AxiosResponse<any>> => {
-  return axios.get('https://dusty-titanium-middle.glitch.me/sick', {
-    params: {
-      q: keyword
-    }
-  });
-};
+export const getSearchResult = (keyword: string): Promise<AxiosResponse<any>> =>
+  apiClient.get('/sick', { params: { q: keyword } });
