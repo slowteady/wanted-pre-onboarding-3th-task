@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react';
 import { getSearchResult } from '../api/searchApi';
+import { SickObj } from '../types/sickTypes';
 import { strCheck } from '../utils/validate';
 
 const ERROR_MESSAGES = '에러가 발생하였습니다.';
 
 function useRequest(keyword: string) {
-  const [sicks, setSicks] = useState([]);
+  const [sicks, setSicks] = useState<SickObj[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isEmpty, setIsEmpty] = useState(true);
 
@@ -27,7 +28,7 @@ function useRequest(keyword: string) {
           } else {
             setIsLoading(false);
 
-            const msg = response.data.message ? response.data.message : ERROR_MESSAGES;
+            const msg = ERROR_MESSAGES;
             throw new Error(msg);
           }
         } catch (err) {
