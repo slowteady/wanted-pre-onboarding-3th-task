@@ -1,6 +1,7 @@
 import apiClient from '../api/axiosInstance';
 
 const REQUEST_SUCCESS = 200;
+const EXPIRE_TIME = 1000 * 60 * 60;
 
 class CacheManager {
   cacheName: string;
@@ -11,7 +12,12 @@ class CacheManager {
 
   async set(key: string, value: string) {
     const cache = await caches.open(this.cacheName);
-    const response = new Response(JSON.stringify(value));
+    const now = new Date();
+    const item = {
+      value,
+      expire: now.getTime() + EXPIRE_TIME
+    };
+    const response = new Response(JSON.stringify(item));
     await cache.put(key, response);
   }
 
@@ -20,7 +26,13 @@ class CacheManager {
     const response = await cache.match(key);
 
     if (response) {
-      return response.json();
+      const item = await response.json();
+      const now = new Date();
+      if (now.getTime() > item.expire) {
+        await cache.delete(key);
+        return null;
+      }
+      return item;
     }
   }
 
