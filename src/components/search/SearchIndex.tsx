@@ -10,7 +10,7 @@ const MIN_INDEX = 0;
 const MAX_INDEX = 8;
 const DEFAULT_INDEX = -1;
 const DEFAULT_VALUE = '';
-const REQUEST_TERM = 200;
+const REQUEST_TERM = 300;
 
 function SearchIndex() {
   const [open, setOpen] = useState(true);
