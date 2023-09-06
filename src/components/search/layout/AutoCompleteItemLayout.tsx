@@ -6,9 +6,9 @@ interface ItemLayoutProps extends ChildrenProps {
   isFocus: boolean;
 }
 
-function AutoCompleteItemLayout({ isFocus, children }: ItemLayoutProps) {
+function AutoCompleteItemLayout({ isFocus = false, children }: ItemLayoutProps) {
   return (
-    <DropDownLi isfocus={isFocus}>
+    <DropDownLi data-isfocus={isFocus}>
       <IconDiv>
         <SearchIcon />
       </IconDiv>
@@ -17,7 +17,7 @@ function AutoCompleteItemLayout({ isFocus, children }: ItemLayoutProps) {
   );
 }
 
-const DropDownLi = styled.div<{ isfocus: boolean }>`
+const DropDownLi = styled.div<{ 'data-isfocus': boolean }>`
   position: relative;
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -25,10 +25,7 @@ const DropDownLi = styled.div<{ isfocus: boolean }>`
   width: 100%;
   height: 40px;
   margin: 8px;
-  &:hover {
-    background-color: #edf5f5;
-  }
-  background-color: ${(props) => (props.isfocus ? '#edf5f5' : '#fff')};
+  background-color: ${(props) => (props['data-isfocus'] ? '#edf5f5' : '#fff')};
 `;
 
 const IconDiv = styled.div`
