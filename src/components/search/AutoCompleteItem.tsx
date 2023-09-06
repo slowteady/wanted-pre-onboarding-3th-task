@@ -1,13 +1,12 @@
 import { styled } from 'styled-components';
-import { SickObj } from '../../types/sickTypes';
 import AutoCompleteItemLayout from './layout/AutoCompleteItemLayout';
 
-interface SickProps extends SickObj {
+interface SickProps {
+  sickNm: string;
   isFocus: boolean;
 }
 
-function AutoCompleteItem({ sickNm, sickCd, isFocus }: SickProps) {
-  
+function AutoCompleteItem({ sickNm, isFocus }: SickProps) {
   return (
     <AutoCompleteItemLayout isFocus={isFocus}>
       <Span title={sickNm}>{sickNm}</Span>
