@@ -13,7 +13,7 @@ const DEFAULT_VALUE = '';
 const REQUEST_TERM = 300;
 
 function SearchIndex() {
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
   const [value, setValue] = useState(DEFAULT_VALUE);
   const [keyword, setKeyword] = useState(DEFAULT_VALUE);
   const [focusIndex, setFocusIndex] = useState(DEFAULT_INDEX);
