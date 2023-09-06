@@ -7,4 +7,14 @@ const axiosInstance = axios.create({
   timeout: 5000
 });
 
+axiosInstance.interceptors.request.use(
+  (config) => {
+    console.info('calling api');
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
+
 export default axiosInstance;
