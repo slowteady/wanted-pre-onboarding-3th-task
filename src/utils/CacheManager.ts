@@ -40,7 +40,7 @@ class CacheManager {
     const cachedData = await this.get(path);
 
     if (cachedData) {
-      return Promise.resolve({ data: cachedData, status: REQUEST_SUCCESS });
+      return Promise.resolve({ data: cachedData.value, status: REQUEST_SUCCESS });
     } else {
       const response = await apiClient.get(path);
       await this.set(path, response.data);
