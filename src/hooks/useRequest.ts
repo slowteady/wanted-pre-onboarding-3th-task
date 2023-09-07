@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { getSearchResult } from '../api/searchApi';
 import { SickObj } from '../types/sickTypes';
 import handleError from '../utils/handleError';
-import { strCheck } from '../utils/validate';
+import { checkInputValid } from '../utils/validate';
 
 export const ERROR_MESSAGES = '에러가 발생하였습니다.';
 
@@ -11,7 +11,7 @@ function useRequest(keyword: string) {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    if (strCheck.isNotEmpty(keyword)) {
+    if (checkInputValid(keyword)) {
       const fetchData = async () => {
         setIsLoading(true);
 
