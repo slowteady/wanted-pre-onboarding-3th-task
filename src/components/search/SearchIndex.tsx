@@ -1,5 +1,6 @@
 import { ChangeEvent, FocusEvent, KeyboardEvent, useEffect, useRef, useState } from 'react';
 import { styled } from 'styled-components';
+import useDebounce from '../../hooks/useDebounce';
 import useRequest from '../../hooks/useRequest';
 import AutoCompleteList from './AutoCompleteList';
 import EmptyButton from './EmptyButton';
@@ -10,47 +11,33 @@ const MIN_INDEX = 0;
 const MAX_INDEX = 8;
 const DEFAULT_INDEX = -1;
 const DEFAULT_VALUE = '';
-const REQUEST_TERM = 300;
+const TIME_TERM = 300;
 
 function SearchIndex() {
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(DEFAULT_VALUE);
-  const [keyword, setKeyword] = useState(DEFAULT_VALUE);
   const [focusIndex, setFocusIndex] = useState(DEFAULT_INDEX);
-  const ref = useRef<HTMLUListElement>(null);
-  const timer = useRef<ReturnType<typeof setTimeout>>();
-  const { sicks, isLoading, isEmpty } = useRequest(keyword);
+  const ulRef = useRef<HTMLUListElement>(null);
+  const debouncedValue = useDebounce(value, TIME_TERM);
+  const { sicks, isLoading, isEmpty } = useRequest(debouncedValue);
 
   useEffect(() => {
-    return () => {
-      if (timer.current) {
-        clearTimeout(timer.current);
-      }
-    };
-  }, []);
-
-  useEffect(() => {
-    if (ref.current?.childElementCount === focusIndex + 1) {
+    if (ulRef.current?.childElementCount === focusIndex + 1) {
       setFocusIndex(MIN_INDEX);
-    } else if (ref.current && focusIndex >= MAX_INDEX) {
-      const hasScrollbar = ref.current.scrollHeight > ref.current.clientHeight;
+    } else if (ulRef.current && focusIndex >= MAX_INDEX) {
+      const hasScrollbar = ulRef.current.scrollHeight > ulRef.current.clientHeight;
       if (hasScrollbar) {
-        const focusedItem = ref.current.children[focusIndex];
+        const focusedItem = ulRef.current.children[focusIndex];
         focusedItem.scrollIntoView({ behavior: 'smooth', block: 'center' });
       }
     }
   }, [focusIndex]);
 
-  const inputKeyword = (e: ChangeEvent<HTMLInputElement>) => {
+  const inputValue = (e: ChangeEvent<HTMLInputElement>) => {
     resetFocusIndex();
 
     const { value } = e.currentTarget;
     setValue(value);
-
-    if (timer.current) {
-      clearTimeout(timer.current);
-    }
-    timer.current = setTimeout(() => setKeyword(value), REQUEST_TERM);
   };
 
   const handleKeyBoard = (e: KeyboardEvent<HTMLInputElement>) => {
@@ -74,12 +61,11 @@ function SearchIndex() {
   };
 
   const changeValue = () => {
-    if (ref.current?.children[focusIndex + 1]) {
-      const listValue = ref.current.children[focusIndex + 1].textContent!;
+    if (ulRef.current?.children[focusIndex + 1]) {
+      const listValue = ulRef.current.children[focusIndex + 1].textContent!;
 
       if (listValue) {
         setValue(listValue);
-        setKeyword(listValue);
         resetFocusIndex();
       }
     }
@@ -94,7 +80,6 @@ function SearchIndex() {
 
   const doReset = () => {
     setValue(DEFAULT_VALUE);
-    setKeyword(DEFAULT_VALUE);
     resetFocusIndex();
   };
 
@@ -108,14 +93,14 @@ function SearchIndex() {
         placeholder={PLACEHOLDER_TEXT}
         onFocus={handleInputFocus}
         onBlur={handleInputFocus}
-        onChange={inputKeyword}
+        onChange={inputValue}
         onKeyDown={handleKeyBoard}
         value={value}
       />
       {open && (
         <>
           <EmptyButton onClick={doReset} />
-          <AutoCompleteList sicks={sicks} isLoading={isLoading} isEmpty={isEmpty} focusIndex={focusIndex} ref={ref} />
+          <AutoCompleteList sicks={sicks} isLoading={isLoading} isEmpty={isEmpty} focusIndex={focusIndex} ref={ulRef} />
         </>
       )}
     </InputLayout>
