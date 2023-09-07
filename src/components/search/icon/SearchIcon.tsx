@@ -1,3 +1,5 @@
+import React from 'react';
+
 function SearchIcon() {
   return (
     <svg viewBox="0 0 16 16" fill="#1f2121" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">

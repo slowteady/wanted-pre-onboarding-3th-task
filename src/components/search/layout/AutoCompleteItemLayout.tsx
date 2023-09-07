@@ -1,3 +1,4 @@
+import React from 'react';
 import { styled } from 'styled-components';
 import { ChildrenProps } from '../../../types/commonTypes';
 import SearchIcon from '../icon/SearchIcon';

@@ -1,4 +1,4 @@
-import { MouseEvent } from 'react';
+import React, { MouseEvent } from 'react';
 import { styled } from 'styled-components';
 
 interface onClickProps {

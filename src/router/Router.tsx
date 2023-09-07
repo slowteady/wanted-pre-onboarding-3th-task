@@ -1,3 +1,4 @@
+import React from 'react';
 import { Navigate, useRoutes } from 'react-router';
 import Error from '../pages/error/Error';
 import Search from '../pages/search/Search';

@@ -1,4 +1,4 @@
-import { Ref, forwardRef } from 'react';
+import React, { Ref, forwardRef } from 'react';
 import { styled } from 'styled-components';
 import { SickObj } from '../../types/sickTypes';
 import Loading from '../common/Loading';

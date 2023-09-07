@@ -1,4 +1,4 @@
-import { ChangeEvent, FocusEvent, KeyboardEvent, useEffect, useReducer, useRef, useState } from 'react';
+import React, { ChangeEvent, FocusEvent, KeyboardEvent, useEffect, useReducer, useRef, useState } from 'react';
 import { styled } from 'styled-components';
 import useDebounce from '../../hooks/useDebounce';
 import useRequest from '../../hooks/useRequest';
