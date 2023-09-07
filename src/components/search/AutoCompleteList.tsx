@@ -8,21 +8,20 @@ import AutoCompleteItem from './AutoCompleteItem';
 interface ResultProps {
   sicks: SickObj[];
   isLoading: boolean;
-  isEmpty: boolean;
   focusIndex: number;
 }
 
-function AutoCompleteList({ sicks, isLoading, isEmpty, focusIndex }: ResultProps, ref: Ref<HTMLUListElement>) {
+function AutoCompleteList({ sicks, isLoading, focusIndex }: ResultProps, ref: Ref<HTMLUListElement>) {
+  const isNotEmpty = sicks && sicks.length > 0;
+
   return (
-    <>
-      <DropDownUl ref={ref}>
-        {isEmpty && <NoData />}
-        {isLoading ? <Loading /> : !isEmpty && <RecommandP>추천 검색어</RecommandP>}
-        {sicks.map(({ sickNm, sickCd }, index) => {
-          return <AutoCompleteItem key={sickCd} isFocus={focusIndex === index} sickNm={sickNm} />;
-        })}
-      </DropDownUl>
-    </>
+    <DropDownUl ref={ref}>
+      {!isNotEmpty && <NoData />}
+      {isLoading ? <Loading /> : isNotEmpty && <RecommandP>추천 검색어</RecommandP>}
+      {sicks.map(({ sickNm, sickCd }, index) => {
+        return <AutoCompleteItem key={sickCd} isFocus={focusIndex === index} sickNm={sickNm} />;
+      })}
+    </DropDownUl>
   );
 }
 

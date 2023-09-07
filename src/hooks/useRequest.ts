@@ -8,7 +8,6 @@ const ERROR_MESSAGES = '에러가 발생하였습니다.';
 function useRequest(keyword: string) {
   const [sicks, setSicks] = useState<SickObj[]>([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [isEmpty, setIsEmpty] = useState(true);
 
   useEffect(() => {
     if (strCheck.isNotEmpty(keyword)) {
@@ -22,7 +21,6 @@ function useRequest(keyword: string) {
 
             if (data && data.length > 0) {
               setSicks(data);
-              setIsEmpty(false);
             }
             setIsLoading(false);
           } else {
@@ -45,11 +43,10 @@ function useRequest(keyword: string) {
     } else {
       setSicks([]);
       setIsLoading(false);
-      setIsEmpty(true);
     }
   }, [keyword]);
 
-  return { sicks, isLoading, isEmpty };
+  return { sicks, isLoading };
 }
 
 export default useRequest;

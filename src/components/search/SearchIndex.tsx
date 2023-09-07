@@ -21,7 +21,7 @@ function SearchIndex() {
   const [focusIndex, dispatch] = useReducer(focusIndexReducer, DEFAULT_INDEX);
   const ulRef = useRef<HTMLUListElement>(null);
   const debouncedValue = useDebounce(value, TIME_TERM);
-  const { sicks, isLoading, isEmpty } = useRequest(debouncedValue);
+  const { sicks, isLoading } = useRequest(debouncedValue);
 
   useEffect(() => {
     const ul = ulRef.current;
@@ -97,7 +97,7 @@ function SearchIndex() {
       {open && (
         <>
           <EmptyButton onClick={() => setValAndResetIdx(DEFAULT_VALUE)} />
-          <AutoCompleteList sicks={sicks} isLoading={isLoading} isEmpty={isEmpty} focusIndex={focusIndex} ref={ulRef} />
+          <AutoCompleteList sicks={sicks} isLoading={isLoading} focusIndex={focusIndex} ref={ulRef} />
         </>
       )}
     </InputLayout>
