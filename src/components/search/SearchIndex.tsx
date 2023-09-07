@@ -24,35 +24,36 @@ function SearchIndex() {
   const { sicks, isLoading, isEmpty } = useRequest(debouncedValue);
 
   useEffect(() => {
-    if (ulRef.current?.childElementCount === focusIndex + 1) {
-      dispatch({ type: 'RESET' });
-    } else if (ulRef.current && focusIndex >= MAX_INDEX) {
-      const hasScrollbar = ulRef.current.scrollHeight > ulRef.current.clientHeight;
-      if (hasScrollbar) {
-        const focusedItem = ulRef.current.children[focusIndex];
-        focusedItem.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    const ul = ulRef.current;
+    if (ul) {
+      if (ul.childElementCount === focusIndex + 1 || focusIndex < DEFAULT_INDEX) {
+        dispatch({ type: 'INDEX_RESET' });
+      } else if (focusIndex >= MAX_INDEX) {
+        const hasScrollbar = ul.scrollHeight > ul.clientHeight;
+        if (hasScrollbar) {
+          const focusedItem = ul.children[focusIndex];
+          focusedItem.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
       }
     }
   }, [focusIndex]);
 
   const onChangeValue = (e: ChangeEvent<HTMLInputElement>) => {
-    // dispatch({ type: 'RESET' });
-
     const { value } = e.currentTarget;
-    setValue(value);
+    setValAndResetIdx(value);
   };
 
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
     if (!e.nativeEvent.isComposing) {
       switch (e.key) {
         case 'ArrowDown':
-          dispatch({ type: 'INCREMENT' });
+          dispatch({ type: 'INDEX_INCREMENT' });
           break;
         case 'ArrowUp':
-          focusIndex <= MIN_INDEX ? dispatch({ type: 'RESET' }) : dispatch({ type: 'DECREMENT' });
+          dispatch({ type: 'INDEX_DECREMENT' });
           break;
         case 'Escape':
-          dispatch({ type: 'RESET' });
+          dispatch({ type: 'INDEX_RESET' });
           e.currentTarget.blur();
           break;
         case 'Enter':
@@ -63,26 +64,23 @@ function SearchIndex() {
   };
 
   const changeInputValue = () => {
-    if (ulRef.current?.children[focusIndex + 1]) {
-      const listValue = ulRef.current.children[focusIndex + 1].textContent;
-
-      if (strCheck.isNotEmpty(listValue)) {
-        setValue(listValue!);
-        dispatch({ type: 'RESET' });
-      }
+    const focusedList = ulRef.current?.children[focusIndex + 1];
+    const textValue = focusedList?.textContent;
+    if (textValue && strCheck.isNotEmpty(textValue)) {
+      setValAndResetIdx(textValue);
     }
   };
 
   const handleInputFocus = (e: FocusEvent<HTMLInputElement>) => {
     setOpen(e.type === 'focus');
     if (e.type === 'blur') {
-      dispatch({ type: 'RESET' });
+      dispatch({ type: 'INDEX_RESET' });
     }
   };
 
-  const doReset = () => {
-    setValue(DEFAULT_VALUE);
-    dispatch({ type: 'RESET' });
+  const setValAndResetIdx = (value: string) => {
+    setValue(value);
+    dispatch({ type: 'INDEX_RESET' });
   };
 
   return (
@@ -97,7 +95,7 @@ function SearchIndex() {
       />
       {open && (
         <>
-          <EmptyButton onClick={doReset} />
+          <EmptyButton onClick={() => setValAndResetIdx(DEFAULT_VALUE)} />
           <AutoCompleteList sicks={sicks} isLoading={isLoading} isEmpty={isEmpty} focusIndex={focusIndex} ref={ulRef} />
         </>
       )}
