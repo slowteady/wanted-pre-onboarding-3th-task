@@ -130,6 +130,28 @@ function SearchIndex() {
 }
 ```
 
+```ts
+import { DEFAULT_INDEX } from '../components/search/SearchIndex';
+
+interface Action {
+  type: 'INDEX_INCREMENT' | 'INDEX_DECREMENT' | 'INDEX_RESET';
+}
+
+export const focusIndexReducer = (focusIndex: number, action: Action) => {
+  switch (action.type) {
+    case 'INDEX_INCREMENT':
+      return focusIndex + 1;
+    case 'INDEX_DECREMENT':
+      return focusIndex - 1;
+    case 'INDEX_RESET':
+      return (focusIndex = DEFAULT_INDEX);
+    default:
+      return focusIndex;
+  }
+};
+
+```
+
 - 한 곳에서 state를 관리할 수 있다고 판단하여 최상위 부모 컴포넌트에서 state를 관리 하도록 구현했습니다.
 - 요청을 통해 가져올 데이터와 로딩 여부 상태는 Custom Hook을 통해 가져올 수 있도록 구현했습니다.
 - 소스의 가독성 향상과 효율을 위해 focusInput state를 reducer를 사용하여 구현했습니다.
