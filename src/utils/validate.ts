@@ -1,8 +1,8 @@
 export const strCheck = {
-  isEmpty: (str: string) => {
-    return str.trim() === '' || str === null || str === undefined;
+  isEmpty: (str: string | null) => {
+    return str === null || str === 'null' || str === undefined || str.trim() === '';
   },
-  isNotEmpty: (str: string) => {
+  isNotEmpty: (str: string | null) => {
     return !strCheck.isEmpty(str);
   }
 };
