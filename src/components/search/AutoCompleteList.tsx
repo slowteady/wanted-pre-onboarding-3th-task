@@ -1,8 +1,8 @@
 import { Ref, forwardRef } from 'react';
 import { styled } from 'styled-components';
 import { SickObj } from '../../types/sickTypes';
-import Loading from '../utils/Loading';
-import NoData from '../utils/NoData';
+import Loading from '../common/Loading';
+import NoData from '../common/NoData';
 import AutoCompleteItem from './AutoCompleteItem';
 
 interface ResultProps {
