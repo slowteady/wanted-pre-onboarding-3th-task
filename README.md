@@ -5,7 +5,7 @@
 
 ## 배포 링크
 
-[배포 링크]()
+[배포 링크](https://clinical-trials-398306.du.r.appspot.com/)
 
 ## 수행자
 
@@ -256,17 +256,17 @@ const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
 - focusIndex를 효율적으로 관리하기 위해 reducer를 만들어서 구현했습니다.
 
 ```ts
-function AutoCompleteList({ sicks, isLoading, isEmpty, focusIndex }: ResultProps, ref: Ref<HTMLUListElement>) {
+function AutoCompleteList({ sicks, isLoading, focusIndex }: ResultProps, ref: Ref<HTMLUListElement>) {
+  const isNotEmpty = sicks && sicks.length > 0;
+
   return (
-    <>
-      <DropDownUl ref={ref}>
-        {isEmpty && <NoData />}
-        {isLoading ? <Loading /> : !isEmpty && <RecommandP>추천 검색어</RecommandP>}
-        {sicks.map(({ sickNm, sickCd }, index) => {
-          return <AutoCompleteItem key={sickCd} isFocus={focusIndex === index} sickNm={sickNm} />;
-        })}
-      </DropDownUl>
-    </>
+    <DropDownUl ref={ref}>
+      {!isNotEmpty && <NoData />}
+      {isLoading ? <Loading /> : isNotEmpty && <RecommandP>추천 검색어</RecommandP>}
+      {sicks.map(({ sickNm, sickCd }, index) => {
+        return <AutoCompleteItem key={sickCd} isFocus={focusIndex === index} sickNm={sickNm} />;
+      })}
+    </DropDownUl>
   );
 }
 ```
@@ -306,7 +306,7 @@ function AutoCompleteList({ sicks, isLoading, isEmpty, focusIndex }: ResultProps
     │       └── Search.tsx
     ├── router/
     │   ├── Router.tsx
-    │   └── routerPaths.js
+    │   └── routerPaths.ts
     ├── state/
     │   └── focusindexReducer.ts
     ├── types/
@@ -315,12 +315,12 @@ function AutoCompleteList({ sicks, isLoading, isEmpty, focusIndex }: ResultProps
     ├── utils/
     │   ├── CacheManager.ts
     │   └── validate.ts
-    ├── App.jsx
-    └── index.jsx
+    ├── App.tsx
+    └── index.tsx
 ```
 
 ### 코드리뷰  
 
 ---
 
-[코드리뷰용 소스분석](https://github.com/slowteady/wanted-pre-onboarding-2th-task/blob/main/source-guide.md)
+[코드리뷰용 소스분석](https://github.com/slowteady/wanted-pre-onboarding-3th-task/blob/main/source-guide.md)
