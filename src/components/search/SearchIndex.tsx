@@ -27,6 +27,7 @@ function SearchIndex() {
     const ul = ulRef.current;
     if (ul) {
       if (ul.childElementCount === focusIndex + 1 || focusIndex < DEFAULT_INDEX) {
+        // 리스트의 포커스를 벗어났을 때 다시 포커스 할 수 있도록 인덱스 리셋
         dispatch({ type: 'INDEX_RESET' });
       } else if (focusIndex >= MAX_INDEX) {
         const hasScrollbar = ul.scrollHeight > ul.clientHeight;
