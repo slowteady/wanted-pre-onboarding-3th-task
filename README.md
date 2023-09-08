@@ -1,4 +1,4 @@
-# 이용민 - Week3 - 과제
+# TEAM6 - 검색 자동완성 애플리케이션
 
 프리온보딩 3주차에 진행한 과제물입니다.  
 기간 : 2023.09.05. ~ 2023.09.08.  
@@ -7,33 +7,64 @@
 
 [배포 링크](https://clinical-trials-398306.du.r.appspot.com/)
 
-## 수행자
+## 👥 팀원
 
 <table border>
   <tbody>
     <tr>
-      <td align="center" width="100px">
-        <img width="100%" src="https://avatars.githubusercontent.com/u/68311202?s=96&v=4" alt="이용민"/>
+      <td align="center" width="200px">
+        <img width="100%" src="https://avatars.githubusercontent.com/u/106734517?v=4"  alt=""/><br />
+        <a href="https://github.com/iziz9">
+          <img src="https://img.shields.io/badge/강현주-1E90FF?style=flat-round&logo=GitHub&logoColor=white"/>
+        </a>
+      </td>
+      <td align="center" width="200px">
+        <img width="100%" src="https://avatars.githubusercontent.com/u/94212747?s=96&v=4"  alt=""/><br />
+        <a href="https://github.com/NR0617">
+          <img src="https://img.shields.io/badge/오나래-1E90FF?style=flat-round&logo=GitHub&logoColor=white"/>
+        </a>
+      </td>
+      <td align="center" width="200px">
+        <img width="100%" src="https://avatars.githubusercontent.com/u/80497049?s=96&v=4"  alt=""/>
+        <a href="https://github.com/thumbthing">
+          <img src="https://img.shields.io/badge/이민구-1E90FF?style=flat-round&logo=GitHub&logoColor=white"/>
+        </a>
+      </td>
+      <td align="center" width="200px">
+        <img width="100%" src="https://avatars.githubusercontent.com/u/68311202?s=96&v=4"  alt=""/>
         <a href="https://github.com/slowteady">
           <img src="https://img.shields.io/badge/이용민-1E90FF?style=flat-round&logo=GitHub&logoColor=white"/>
+        </a>
+      </td>
+      <td align="center" width="200px">
+        <img width="100%" src="https://avatars.githubusercontent.com/u/43225974?s=96&v=4"  alt=""/>
+        <a href="https://github.com/lyn94">
+          <img src="https://img.shields.io/badge/이유나-1E90FF?style=flat-round&logo=GitHub&logoColor=white"/>
+        </a>
+      </td>
+      <td align="center" width="200px">
+        <img width="100%" src="https://avatars.githubusercontent.com/u/110447844?s=96&v=4"  alt=""/>
+        <a href="https://github.com/337yj">
+          <img src="https://img.shields.io/badge/이윤정-1E90FF?style=flat-round&logo=GitHub&logoColor=white"/>
         </a>
       </td>
      </tr>
   </tbody>
 </table>
+<br/>
 
 ## 실행 방법
 
 1. 로컬 환경에 프로젝트 복사본 생성
 
 ```bash
-git clone https://github.com/slowteady/wanted-pre-onboarding-3th-task.git
+git clone https://github.com/pre-onboarding-12th-team6/pre-onboarding-12th-3-6.git
 ```
 
 2. 프로젝트 폴더로 이동
 
 ```bash
-cd wanted-pre-onboarding-3th-task
+cd pre-onboarding-12th-3-6
 ```
 
 3. 프로젝트 종속성 설치
@@ -56,7 +87,7 @@ npm start
 ![styledComponents](https://img.shields.io/badge/styledComponents-DB7093?style=for-the-badge&logo=styledComponents&logoColor=white)
 ![GoogleCloud](https://img.shields.io/badge/GoogleCloud-4285F4?style=for-the-badge&logo=GoogleCloud&logoColor=white)
 
-## 기술 설명
+## BEST PRACTICE
 
 ### 1. 로컬 캐싱
 
@@ -270,6 +301,113 @@ function AutoCompleteList({ sicks, isLoading, focusIndex }: ResultProps, ref: Re
 - 자식 컴포넌트에게 focusIndex를 props로 넘겨주어 map 함수를 통해 렌더링을 할 때, isFocus props로 일치 여부를 넘겨주도록 구현했습니다.
 - 자식 컴포넌트는 isFocus가 true면 포커싱 디자인을 적용합니다.
 
+### 4. STATE 관리
+
+```tsx
+function SearchIndex() {
+  const [open, setOpen] = useState(false);
+  const [value, setValue] = useState(DEFAULT_VALUE);
+  const [focusIndex, dispatch] = useReducer(focusIndexReducer, DEFAULT_INDEX);
+  const ulRef = useRef<HTMLUListElement>(null);
+  const debouncedValue = useDebounce(value, TIME_TERM);
+  const { sicks, isLoading } = useRequest(debouncedValue);
+
+                                  .
+                                  .
+                                  .
+
+  const onChangeValue = (e: ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.currentTarget;
+    setValAndResetIdx(value);
+  };
+
+  const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (!e.nativeEvent.isComposing) {
+      switch (e.key) {
+        case 'ArrowDown':
+          dispatch({ type: 'INDEX_INCREMENT' });
+          break;
+        case 'ArrowUp':
+          dispatch({ type: 'INDEX_DECREMENT' });
+          break;
+        case 'Escape':
+          dispatch({ type: 'INDEX_RESET' });
+          e.currentTarget.blur();
+          break;
+        case 'Enter':
+          if (focusIndex >= MIN_INDEX) changeInputValue();
+          break;
+      }
+    }
+  };
+
+  const changeInputValue = () => {
+    const focusedList = ulRef.current?.children[focusIndex + 1];
+    const textValue = focusedList?.textContent;
+    if (textValue && strCheck.isNotEmpty(textValue)) {
+      setValAndResetIdx(textValue);
+    }
+  };
+
+  const handleInputFocus = (e: FocusEvent<HTMLInputElement>) => {
+    setOpen(e.type === 'focus');
+    if (e.type === 'blur') {
+      dispatch({ type: 'INDEX_RESET' });
+    }
+  };
+
+  const setValAndResetIdx = (value: string) => {
+    setValue(value);
+    dispatch({ type: 'INDEX_RESET' });
+  };
+
+  return (
+    <InputLayout>
+      <Input
+        placeholder={PLACEHOLDER_TEXT}
+        onFocus={handleInputFocus}
+        onBlur={handleInputFocus}
+        onChange={onChangeValue}
+        onKeyDown={handleKeyDown}
+        value={value}
+      />
+      {open && (
+        <>
+          <EmptyButton onClick={() => setValAndResetIdx(DEFAULT_VALUE)} />
+          <AutoCompleteList sicks={sicks} isLoading={isLoading} focusIndex={focusIndex} ref={ulRef} />
+        </>
+      )}
+    </InputLayout>
+  );
+}
+```
+
+```ts
+import { DEFAULT_INDEX } from '../components/search/SearchIndex';
+
+interface Action {
+  type: 'INDEX_INCREMENT' | 'INDEX_DECREMENT' | 'INDEX_RESET';
+}
+
+export const focusIndexReducer = (focusIndex: number, action: Action) => {
+  switch (action.type) {
+    case 'INDEX_INCREMENT':
+      return focusIndex + 1;
+    case 'INDEX_DECREMENT':
+      return focusIndex - 1;
+    case 'INDEX_RESET':
+      return (focusIndex = DEFAULT_INDEX);
+    default:
+      return focusIndex;
+  }
+};
+
+```
+
+- 규모를 생각했을 때, 한 곳에서 state를 관리할 수 있다고 판단하여 최상위 부모 컴포넌트에서 state를 관리 하도록 구현했습니다.
+- 요청을 통해 가져올 데이터와 로딩 여부 상태는 Custom Hook을 통해 가져올 수 있도록 구현했습니다.
+- 소스의 가독성 향상과 효율을 위해 focusInput state를 reducer를 사용하여 구현했습니다.
+
 ## 프로젝트 구조
 
 ```bash
@@ -315,9 +453,3 @@ function AutoCompleteList({ sicks, isLoading, focusIndex }: ResultProps, ref: Re
     ├── App.tsx
     └── index.tsx
 ```
-
-### 코드리뷰  
-
----
-
-[코드리뷰용 소스분석](https://github.com/slowteady/wanted-pre-onboarding-3th-task/blob/main/source-guide.md)
