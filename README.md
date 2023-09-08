@@ -177,19 +177,12 @@ class CacheManager {
 ```ts
 function useDebounce(value: string, timeTerm: number) {
   const [debouncedValue, setDebouncedValue] = useState(value);
-  const timer = useRef<ReturnType<typeof setTimeout>>();
 
   useEffect(() => {
-    if (timer.current) {
-      clearTimeout(timer.current);
-    }
-
-    timer.current = setTimeout(() => setDebouncedValue(value), timeTerm);
+    const timeoutId = setTimeout(() => setDebouncedValue(value), timeTerm);
 
     return () => {
-      if (timer.current) {
-        clearTimeout(timer.current);
-      }
+      clearTimeout(timeoutId);
     };
   }, [value, timeTerm]);
 
@@ -261,11 +254,14 @@ function AutoCompleteList({ sicks, isLoading, focusIndex }: ResultProps, ref: Re
 
   return (
     <DropDownUl ref={ref}>
-      {!isNotEmpty && <NoData />}
       {isLoading ? <Loading /> : isNotEmpty && <RecommandP>추천 검색어</RecommandP>}
-      {sicks.map(({ sickNm, sickCd }, index) => {
-        return <AutoCompleteItem key={sickCd} isFocus={focusIndex === index} sickNm={sickNm} />;
-      })}
+      {!isNotEmpty ? (
+        <NoData />
+      ) : (
+        sicks.map(({ sickNm, sickCd }, index) => {
+          return <AutoCompleteItem key={sickCd} isFocus={focusIndex === index} sickNm={sickNm} />;
+        })
+      )}
     </DropDownUl>
   );
 }
@@ -314,6 +310,7 @@ function AutoCompleteList({ sicks, isLoading, focusIndex }: ResultProps, ref: Re
     │   └── sickTypes.ts
     ├── utils/
     │   ├── CacheManager.ts
+    │   ├── handleError.ts
     │   └── validate.ts
     ├── App.tsx
     └── index.tsx
