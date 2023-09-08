@@ -16,11 +16,14 @@ function AutoCompleteList({ sicks, isLoading, focusIndex }: ResultProps, ref: Re
 
   return (
     <DropDownUl ref={ref}>
-      {!isNotEmpty && <NoData />}
       {isLoading ? <Loading /> : isNotEmpty && <RecommandP>추천 검색어</RecommandP>}
-      {sicks.map(({ sickNm, sickCd }, index) => {
-        return <AutoCompleteItem key={sickCd} isFocus={focusIndex === index} sickNm={sickNm} />;
-      })}
+      {!isNotEmpty ? (
+        <NoData />
+      ) : (
+        sicks.map(({ sickNm, sickCd }, index) => {
+          return <AutoCompleteItem key={sickCd} isFocus={focusIndex === index} sickNm={sickNm} />;
+        })
+      )}
     </DropDownUl>
   );
 }
