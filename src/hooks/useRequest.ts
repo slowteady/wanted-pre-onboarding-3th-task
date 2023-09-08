@@ -20,9 +20,7 @@ function useRequest(keyword: string) {
           if (response.status === 200) {
             const { data } = response;
 
-            if (data && data.length > 0) {
-              setSicks(data);
-            }
+            data && data.length > 0 ? setSicks(data) : setSicks([]);
             setIsLoading(false);
           } else {
             setIsLoading(false);
