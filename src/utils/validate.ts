@@ -1,17 +1,15 @@
-export const strCheck = {
-  isEmpty: (str: string) => {
-    return str === undefined || str.trim() === '';
-  },
-  isNotEmpty: (str: string) => {
-    return !strCheck.isEmpty(str);
-  }
-};
-export const checkInputValid = (keyword: string) => {
-  const ConsonantRegex = /^[ㄱ-ㅎ]+$/;
-  const VowelRegex = /^[ㅏ-ㅣ]+$/;
-  const isInputConsonant = !ConsonantRegex.test(keyword);
-  const isInputVowel = !VowelRegex.test(keyword);
-  const isValid = isInputConsonant && isInputVowel && strCheck.isNotEmpty(keyword);
+const CONSONANT_REGEX = /^[ㄱ-ㅎ]+$/;
+const VOWEL_REGEX = /^[ㅏ-ㅣ]+$/;
+const NUMBER_REGEX = /^[0-9]+$/;
 
+export const checkInputValid = (keyword: string) => {
+  if (keyword.length === 0 || keyword.trim() === '') {
+    return;
+  }
+  const isValidConsonant = !CONSONANT_REGEX.test(keyword);
+  const isValidVowel = !VOWEL_REGEX.test(keyword);
+  const isValidNumber = !NUMBER_REGEX.test(keyword);
+
+  const isValid = isValidConsonant && isValidVowel && isValidNumber;
   return isValid;
 };
