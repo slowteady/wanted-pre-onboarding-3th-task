@@ -1,4 +1,4 @@
-# TEAM6 - 검색 자동완성 애플리케이션
+# 이용민 - Week3 - 과제
 
 프리온보딩 3주차에 진행한 과제물입니다.  
 기간 : 2023.09.05. ~ 2023.09.08.  
@@ -12,59 +12,28 @@
 <table border>
   <tbody>
     <tr>
-      <td align="center" width="200px">
-        <img width="100%" src="https://avatars.githubusercontent.com/u/106734517?v=4"  alt=""/><br />
-        <a href="https://github.com/iziz9">
-          <img src="https://img.shields.io/badge/강현주-1E90FF?style=flat-round&logo=GitHub&logoColor=white"/>
-        </a>
-      </td>
-      <td align="center" width="200px">
-        <img width="100%" src="https://avatars.githubusercontent.com/u/94212747?s=96&v=4"  alt=""/><br />
-        <a href="https://github.com/NR0617">
-          <img src="https://img.shields.io/badge/오나래-1E90FF?style=flat-round&logo=GitHub&logoColor=white"/>
-        </a>
-      </td>
-      <td align="center" width="200px">
-        <img width="100%" src="https://avatars.githubusercontent.com/u/80497049?s=96&v=4"  alt=""/>
-        <a href="https://github.com/thumbthing">
-          <img src="https://img.shields.io/badge/이민구-1E90FF?style=flat-round&logo=GitHub&logoColor=white"/>
-        </a>
-      </td>
-      <td align="center" width="200px">
-        <img width="100%" src="https://avatars.githubusercontent.com/u/68311202?s=96&v=4"  alt=""/>
+      <td align="center" width="100px">
+        <img width="100%" src="https://avatars.githubusercontent.com/u/68311202?s=96&v=4" alt="이용민"/>
         <a href="https://github.com/slowteady">
           <img src="https://img.shields.io/badge/이용민-1E90FF?style=flat-round&logo=GitHub&logoColor=white"/>
-        </a>
-      </td>
-      <td align="center" width="200px">
-        <img width="100%" src="https://avatars.githubusercontent.com/u/43225974?s=96&v=4"  alt=""/>
-        <a href="https://github.com/lyn94">
-          <img src="https://img.shields.io/badge/이유나-1E90FF?style=flat-round&logo=GitHub&logoColor=white"/>
-        </a>
-      </td>
-      <td align="center" width="200px">
-        <img width="100%" src="https://avatars.githubusercontent.com/u/110447844?s=96&v=4"  alt=""/>
-        <a href="https://github.com/337yj">
-          <img src="https://img.shields.io/badge/이윤정-1E90FF?style=flat-round&logo=GitHub&logoColor=white"/>
         </a>
       </td>
      </tr>
   </tbody>
 </table>
-<br/>
 
 ## 실행 방법
 
 1. 로컬 환경에 프로젝트 복사본 생성
 
 ```bash
-git clone https://github.com/pre-onboarding-12th-team6/pre-onboarding-12th-3-6.git
+git clone https://github.com/slowteady/wanted-pre-onboarding-3th-task.git
 ```
 
 2. 프로젝트 폴더로 이동
 
 ```bash
-cd pre-onboarding-12th-3-6
+cd wanted-pre-onboarding-3th-task
 ```
 
 3. 프로젝트 종속성 설치
@@ -260,7 +229,9 @@ const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
     if (!e.nativeEvent.isComposing) {
       switch (e.key) {
         case 'ArrowDown':
-          dispatch({ type: 'INDEX_INCREMENT' });
+          if (!isLastIndex) {
+            dispatch({ type: 'INDEX_INCREMENT' });
+          }
           break;
         case 'ArrowUp':
           dispatch({ type: 'INDEX_DECREMENT' });
@@ -325,7 +296,9 @@ function SearchIndex() {
     if (!e.nativeEvent.isComposing) {
       switch (e.key) {
         case 'ArrowDown':
-          dispatch({ type: 'INDEX_INCREMENT' });
+          if (!isLastIndex) {
+            dispatch({ type: 'INDEX_INCREMENT' });
+          }
           break;
         case 'ArrowUp':
           dispatch({ type: 'INDEX_DECREMENT' });
