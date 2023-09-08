@@ -3,7 +3,6 @@ import { styled } from 'styled-components';
 import useDebounce from '../../hooks/useDebounce';
 import useRequest from '../../hooks/useRequest';
 import { focusIndexReducer } from '../../state/focusIndexReducer';
-import { strCheck } from '../../utils/validate';
 import AutoCompleteList from './AutoCompleteList';
 import EmptyButton from './EmptyButton';
 import InputLayout from './layout/InputLayout';
@@ -26,7 +25,7 @@ function SearchIndex() {
   useEffect(() => {
     const ul = ulRef.current;
     if (ul) {
-      if (ul.childElementCount === focusIndex + 1 || focusIndex < DEFAULT_INDEX) {
+      if (focusIndex < DEFAULT_INDEX) {
         // 리스트의 포커스를 벗어났을 때 다시 포커스 할 수 있도록 인덱스 리셋
         dispatch({ type: 'INDEX_RESET' });
       } else if (focusIndex >= MAX_INDEX) {
@@ -45,10 +44,14 @@ function SearchIndex() {
   };
 
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
-    if (!e.nativeEvent.isComposing) {
+    if (!e.nativeEvent.isComposing && sicks.length > 0) {
+      const isLastIndex = focusIndex + 1 === sicks.length;
+
       switch (e.key) {
         case 'ArrowDown':
-          dispatch({ type: 'INDEX_INCREMENT' });
+          if (!isLastIndex) {
+            dispatch({ type: 'INDEX_INCREMENT' });
+          }
           break;
         case 'ArrowUp':
           dispatch({ type: 'INDEX_DECREMENT' });
@@ -67,7 +70,7 @@ function SearchIndex() {
   const changeInputValue = () => {
     const focusedList = ulRef.current?.children[focusIndex + 1];
     const textValue = focusedList?.textContent;
-    if (textValue && strCheck.isNotEmpty(textValue)) {
+    if (textValue && textValue.length > 0) {
       setValAndResetIdx(textValue);
     }
   };
